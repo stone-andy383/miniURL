@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const database = require('../database');
+const bcrypt = require('bcrypt');
 
 const router = new Router();
 const saltRounds = 10;
@@ -12,6 +13,12 @@ function intToBase36(x) {
     return result;
 };
 
+/* to simplify code, can attach multiple gets and posts together
+router
+    .get
+    .post
+*/
+
 // Response to GET requests
 router.get('/', async (ctx) => {
 
@@ -20,11 +27,18 @@ router.get('/', async (ctx) => {
 
 router.get('/t/:miniURL', async (ctx) => {
     // find url in DB or error- does not exist
-    ctx.body = 'Hello ' + ctx.params.miniURL;
+    
+    let query = database.query(
+        'SELECT * FROM urls WHERE mini_url = ctx.params.miniURL'
+    )
+    ctx.body = query;
 });
 
 router.post('/minify', async (ctx) => {
     // enter new URL into DB
+
+    ctx.body = ctx.request.body.url;
+
       /*  Database tables for URLs and users
 
 CREATE TABLE urls(
@@ -38,13 +52,14 @@ CREATE TABLE urls(
 
 
 */
-    database.query(
+    //database.query('INSERT INTO urls VALUES ();')
+        /*
         `
         INSERT INTO urls (original_url, mini_url, counter, last_hit, user_id)
         VALUES ($1, $2, $3, $4, $5) RETURNING *
         `,
         []
-    )
+        */
 });
 
 router.get('/crypt', async (ctx) => {
