@@ -27,39 +27,26 @@ router.get('/', async (ctx) => {
 
 router.get('/t/:miniURL', async (ctx) => {
     // find url in DB or error- does not exist
-    
-    let query = database.query(
-        'SELECT * FROM urls WHERE mini_url = ctx.params.miniURL'
+    let id = ctx.params.miniURL;
+
+    let query = await database.query(
+        'SELECT * FROM public.urls WHERE id = ' + id
     )
-    ctx.body = query;
+    await database.query(
+        'UPDATE public.urls SET counter = counter + 1 WHERE id = ' + id
+    )
+    ctx.redirect(query.rows[0].original_url);
 });
 
 router.post('/minify', async (ctx) => {
     // enter new URL into DB
-
-    ctx.body = ctx.request.body.url;
-
-      /*  Database tables for URLs and users
-
-CREATE TABLE urls(
-   id BIGSERIAL PRIMARY KEY,
-   original_url VARCHAR NOT NULL,
-   mini_url VARCHAR NOT NULL,
-   counter INT NOT NULL,
-   last_hit TIMESTAMP
-   user_id INT
-);
-
-
-*/
-    //database.query('INSERT INTO urls VALUES ();')
-        /*
+    await database.query(
         `
-        INSERT INTO urls (original_url, mini_url, counter, last_hit, user_id)
-        VALUES ($1, $2, $3, $4, $5) RETURNING *
-        `,
-        []
-        */
+        INSERT INTO public.urls(
+        original_url, counter, user_id)
+        VALUES ('` + ctx.request.body.url + `', 0, 0)
+        `
+    );
 });
 
 router.get('/crypt', async (ctx) => {

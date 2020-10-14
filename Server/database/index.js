@@ -25,9 +25,7 @@ exports.query = async function (q, data) {
 CREATE TABLE urls(
    id BIGSERIAL PRIMARY KEY,
    original_url VARCHAR NOT NULL,
-   mini_url VARCHAR NOT NULL,
    counter INT NOT NULL,
-   last_hit TIMESTAMP
    user_id INT
 );
 
