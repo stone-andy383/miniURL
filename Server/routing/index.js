@@ -27,26 +27,45 @@ router.get('/', async (ctx) => {
 
 router.get('/t/:miniURL', async (ctx) => {
     // find url in DB or error- does not exist
-    let id = ctx.params.miniURL;
+    let id = parseInt(ctx.params.miniURL, 36);
+    console.log(id);
+    try {
+        var query = await database.query(
+            'SELECT * FROM public.urls WHERE id = ' + id
+        )
 
-    let query = await database.query(
-        'SELECT * FROM public.urls WHERE id = ' + id
-    )
-    await database.query(
-        'UPDATE public.urls SET counter = counter + 1 WHERE id = ' + id
-    )
-    ctx.redirect(query.rows[0].original_url);
+        
+        if (query.rows[0] != null) {
+            await database.query(
+                'UPDATE public.urls SET counter = counter + 1 WHERE id = ' + id
+            )
+            ctx.redirect(query.rows[0].original_url);
+        } else {
+            ctx.body = 'Error: Not a valid url';
+        }
+    } catch (error) {
+        ctx.body = 'Error';
+    }
+
+
+    
 });
 
 router.post('/minify', async (ctx) => {
     // enter new URL into DB
-    await database.query(
-        `
-        INSERT INTO public.urls(
-        original_url, counter, user_id)
-        VALUES ('` + ctx.request.body.url + `', 0, 0)
-        `
-    );
+
+    try {
+        await database.query(
+            `
+            INSERT INTO public.urls(
+            original_url, counter, user_id)
+            VALUES ('` + ctx.request.body.url + `', 0, 0)
+            `
+        );
+    } catch (error) {
+        ctx.body = 'Error';
+    }
+
 });
 
 router.get('/crypt', async (ctx) => {
