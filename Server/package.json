@@ -18,12 +18,16 @@
   "homepage": "https://github.com/stone-andy383/miniURL#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "http-errors": "^1.8.0",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
     "koa-router": "^9.4.0",
     "pg": "^8.4.0"
   },
   "devDependencies": {
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
     "koa-logger": "^3.2.1"
   }
 }
