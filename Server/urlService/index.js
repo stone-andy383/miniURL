@@ -24,7 +24,6 @@ exports.findURL = async function (ctx, miniURL) {
         await database.query(text2, values);
 
         // Redirect page to requested URL
-        //return ctx.redirect(query.rows[0].original_url);
         return query.rows[0].original_url;
     } catch (error) {
         console.log(error);
