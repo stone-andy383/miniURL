@@ -6,25 +6,19 @@ const urlService = require('../urlService');
 const router = new Router();
 const saltRounds = 10;
 
-/* to simplify code, can attach multiple gets and posts together
-router
-    .get
-    .post
-*/
-
 // Response to GET requests
 router
     .get('/', async (ctx) => {
         ctx.body = 'Hello World!';
     })
     // Get original url from db
-    .get('/t/:miniURL', async (ctx) => {
-        const url = await urlService.findURL(ctx, ctx.params.miniURL);
+    .get('/t/:id', async (ctx) => {
+        const url = await urlService.find(ctx, ctx.params.id);
         ctx.redirect(url);
     })
     // enter new URL into DB
-    .post('/minify', async (ctx) => {
-        const miniURL = await urlService.urlMinify(ctx, ctx.request.body.url);
+    .post('/urls', async (ctx) => {
+        const miniURL = await urlService.minify(ctx, ctx.request.body.url);
         // console.log(miniURL);
         return miniURL;
     })
