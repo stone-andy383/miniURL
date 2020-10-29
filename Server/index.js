@@ -10,35 +10,11 @@ const app = new Koa();
 // Logging
 app.use(Logger());
 
-//Set up body parsing middleware
+// Set up body parsing middleware
 app.use(bodyParser({ multipart: true }));
 
 // Add routes and response to the requests
 app.use(routes.routes()).use(routes.allowedMethods());
-
-app.use(async (ctx,next) => {
-    //db.start();
-    //console.log('Database Connected');
-});
-/*
-// Listen to port
-app.listen(port, () => {
-    
-    db.start();
-    console.log('Database Connected');
- 
-    console.log('Server running on port: %s.  Visit http://localhost:%s/', port, port);
-});
-*/
-
-/* Listen to port
-app.listen(port, () => {
-    await db.start();
-    console.log('Database Connected');
- 
-    console.log('Server running on port: %s.  Visit http://localhost:%s/', port, port);
- 
-*/
 
 // function to start server.  Connect to database and listen to port
 async function start() {
@@ -48,7 +24,6 @@ async function start() {
 
         this.server = app.listen(port);
         console.log('Server running on port: %s.  Visit http://localhost:%s/', port, port);
-
     } catch (error) {
         console.log(error);
     }
@@ -57,7 +32,7 @@ async function start() {
 app.close = async function () {
     this.server.close();
     db.close();
-}
+};
 
 // Invoke the start function
 start();
