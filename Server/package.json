@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/stone-andy383/miniURL#readme",
   "dependencies": {
+    "@koa/cors": "^3.1.0",
     "bcrypt": "^5.0.0",
     "http-errors": "^1.8.0",
     "koa": "^2.13.0",

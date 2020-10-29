@@ -3,12 +3,15 @@ const Logger = require('koa-logger');
 const bodyParser = require('koa-body');
 const routes = require('./routing');
 const db = require('./database');
+const cors = require('@koa/cors');
 
 const port = 3001;
 
 const app = new Koa();
 // Logging
 app.use(Logger());
+
+app.use(cors());
 
 // Set up body parsing middleware
 app.use(bodyParser({ multipart: true }));
